@@ -9,6 +9,7 @@ import { createContext } from "./context";
 import { registerAuthRoutes } from "../auth";
 import { initMissionScheduler } from "../missionScheduler";
 import { securityHeadersMiddleware, cacheHeadersMiddleware } from "../cacheHeaders";
+import { startDataPumps } from "../sseDataPump";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const isProduction = process.env.NODE_ENV === "production";
@@ -68,6 +69,8 @@ async function main() {
   await initMissionScheduler().catch(error => {
     console.error("[Server] Failed to initialize mission scheduler:", error);
   });
+
+  startDataPumps();
 
   const port = Number(process.env.PORT) || 3000;
   app.listen(port, () => {
