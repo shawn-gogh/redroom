@@ -27,14 +27,21 @@ export interface LLMResponse {
   choices: Array<{ message: { content: string | null } }>;
 }
 
-const DEFAULT_MODEL = "gpt-4o-mini";
 const REQUEST_TIMEOUT_MS = 60_000;
 const MAX_RETRIES = 2;
 
-/** Calls the OpenAI-compatible chat completions endpoint, with retry and timeout handling. */
+/**
+ * Calls a real OpenAI-compatible chat completions endpoint directly
+ * (OpenAI, Azure OpenAI, or any compatible relay), with retry and timeout
+ * handling. Configured via LLM_API_URL / LLM_API_KEY / LLM_MODEL.
+ */
 export async function invokeLLM(params: InvokeLLMParams): Promise<LLMResponse> {
+  if (!ENV.llmApiKey) {
+    throw new Error("[LLM] LLM_API_KEY is not configured.");
+  }
+
   const body = {
-    model: params.model ?? DEFAULT_MODEL,
+    model: params.model ?? ENV.llmModel,
     messages: params.messages,
     temperature: params.temperature ?? 0.2,
     ...(params.response_format ? { response_format: params.response_format } : {}),
@@ -45,11 +52,11 @@ export async function invokeLLM(params: InvokeLLMParams): Promise<LLMResponse> {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
     try {
-      const res = await fetch(`${ENV.forgeApiUrl}/chat/completions`, {
+      const res = await fetch(`${ENV.llmApiUrl.replace(/\/+$/, "")}/chat/completions`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${ENV.forgeApiKey}`,
+          Authorization: `Bearer ${ENV.llmApiKey}`,
         },
         body: JSON.stringify(body),
         signal: controller.signal,

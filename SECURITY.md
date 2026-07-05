@@ -50,7 +50,7 @@ The following design decisions are relevant to the security posture of the platf
 
 **Dual authentication** — The CMS super-admin token (`x-sa-token`) is completely independent of the OAuth user session. Compromising a user account — even an admin account — does not grant CMS access. The `ADMIN_SECRET_KEY` environment variable must be kept secret and rotated if compromised.
 
-**Environment variable isolation** — Variables prefixed with `VITE_` are bundled into the client-side JavaScript and are visible to end users. Private API keys and secrets must never be placed in `VITE_` variables. The `BUILT_IN_FORGE_API_KEY` (LLM service key) is server-side only and is never exposed to the client.
+**Environment variable isolation** — Variables prefixed with `VITE_` are bundled into the client-side JavaScript and are visible to end users. Private API keys and secrets must never be placed in `VITE_` variables. `LLM_API_KEY` and the `AWS_*` storage credentials are server-side only and are never exposed to the client.
 
 **Session cookies** — Session cookies are `httpOnly` and `sameSite: lax`. They are signed with `JWT_SECRET`. If `JWT_SECRET` is compromised, all active sessions must be considered invalid and the secret must be rotated immediately (which invalidates all existing sessions).
 

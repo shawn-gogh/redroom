@@ -21,8 +21,19 @@ export const ENV = {
   jwtSecret: required("JWT_SECRET"),
   adminSecretKey: optional("ADMIN_SECRET_KEY"),
 
-  forgeApiUrl: required("BUILT_IN_FORGE_API_URL"),
-  forgeApiKey: required("BUILT_IN_FORGE_API_KEY"),
+  // LLM provider — any OpenAI-compatible /chat/completions endpoint
+  // (OpenAI itself, Azure OpenAI, or a compatible relay).
+  llmApiUrl: optional("LLM_API_URL") ?? "https://api.openai.com/v1",
+  llmApiKey: optional("LLM_API_KEY") ?? "",
+  llmModel: optional("LLM_MODEL") ?? "gpt-4o-mini",
+
+  // Direct S3 (or S3-compatible: R2, MinIO, Backblaze B2, ...) object storage.
+  awsAccessKeyId: optional("AWS_ACCESS_KEY_ID") ?? "",
+  awsSecretAccessKey: optional("AWS_SECRET_ACCESS_KEY") ?? "",
+  awsRegion: optional("AWS_REGION") ?? "us-east-1",
+  s3Bucket: optional("S3_BUCKET_NAME") ?? "",
+  s3Endpoint: optional("S3_ENDPOINT"),
+  s3PublicBaseUrl: optional("S3_PUBLIC_BASE_URL"),
 
   aisApiKey: optional("AIS_API_KEY") ?? "",
 

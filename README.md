@@ -176,10 +176,16 @@ All secrets and configuration values must be provided via environment variables.
 | `VITE_APP_ID` | ✅ | OAuth application ID for user authentication |
 | `OAUTH_SERVER_URL` | ✅ | OAuth backend base URL |
 | `VITE_OAUTH_PORTAL_URL` | ✅ | OAuth login portal URL (frontend) |
-| `BUILT_IN_FORGE_API_URL` | ✅ | LLM / AI service base URL (server-side) |
-| `BUILT_IN_FORGE_API_KEY` | ✅ | Bearer token for LLM / AI service (server-side, never expose to client) |
-| `VITE_FRONTEND_FORGE_API_URL` | ✅ | LLM / AI service base URL (client-side) |
-| `VITE_FRONTEND_FORGE_API_KEY` | ✅ | Bearer token for LLM / AI service (client-side, public-safe scope only) |
+| `LLM_API_URL` | ⬜ | Any OpenAI-compatible base URL (default: `https://api.openai.com/v1`) |
+| `LLM_API_KEY` | ✅ | API key for the LLM provider |
+| `LLM_MODEL` | ⬜ | Model name to request (default: `gpt-4o-mini`) |
+| `AWS_ACCESS_KEY_ID` | ✅ | S3 access key |
+| `AWS_SECRET_ACCESS_KEY` | ✅ | S3 secret key |
+| `AWS_REGION` | ⬜ | S3 region (default: `us-east-1`) |
+| `S3_BUCKET_NAME` | ✅ | Bucket used for uploaded files (must allow public read) |
+| `S3_ENDPOINT` | ⬜ | Set only for S3-compatible providers other than AWS (R2, MinIO, ...) |
+| `S3_PUBLIC_BASE_URL` | ⬜ | Set only if uploads are served through a CDN/custom domain |
+| `VITE_GOOGLE_MAPS_API_KEY` | ✅ | Google Maps JavaScript API key (client-side) |
 | `VITE_APP_TITLE` | ⬜ | Application display name (default: `Redroom`) |
 | `VITE_APP_LOGO` | ⬜ | URL to application logo image |
 | `OWNER_OPEN_ID` | ⬜ | Owner's OAuth open ID (used for owner-only notifications) |
